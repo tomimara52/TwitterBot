@@ -10,9 +10,6 @@ def find_user_screen_name(tw_api, id):
 
 
 def find_user_id(tw_api, id):
-    """
-Con 'get_user' obtengo información de un usuario a partir de su nombre
-"""
     try:
         user = tw_api.get_user(id=id)
         return user.id
@@ -32,14 +29,6 @@ def respond_with_info(tw_api, info, sender):
 
 
 def stalk(words, user_id, tw_api):
-    """
-    With 'user_timeline', I can get the timeline of a user, then I can go through it with Cursor object
-    and see if any of the keywords are in any of the tweets.
-
-    Mediante 'user_timeline', puedo obtener el
-    perfil de una persona, para luego navegarlo con el objeto Cursor y ver si la palabra clave está
-    en el texto de alguno de sus tweets.
-    """
     print("Beginning to stalk...")
     for status in tweepy.Cursor(tw_api.user_timeline, user_id=user_id, include_rts=False).items():
         st_text = status.text.lower().replace("\n", ' ')
