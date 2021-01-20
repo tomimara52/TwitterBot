@@ -22,23 +22,24 @@ Con 'get_user' obtengo información de un usuario a partir de su nombre
 
 def respond_with_info(tw_api, info, sender):
     if info == False:
-        response = 'No encontré ningún tweet del usuario donde aparezca esa palabra'
+        response = "I couldn't fin any tweet where the user said any of those words."
     elif isinstance(info, str):
-        response = "No pude encontrar el usuario '{}'".format(info)
+        response = "I couldn't find the user '{}'".format(info)
     else:
-        response = "El usuario que me pediste dijo '{}' en la fecha {}\n" \
-                   "Link del tweet: https://twitter.com/{}/status/{}".format(info[0], info[1], info[2], info[3])
+        response = "The user you asked me to stalk said '{}' at {}\n" \
+                   "Tweet link: https://twitter.com/{}/status/{}".format(info[0], info[1], info[2], info[3])
     tw_api.send_direct_message(recipient_id=sender, text=response)
 
 
-"""
-Mediante 'user_timeline', puedo obtener el
-perfil de una persona, para luego navegarlo con el objeto Cursor y ver si la palabra clave está
-en el texto de alguno de sus tweets
-"""
-
-
 def stalk(words, user_id, tw_api):
+    """
+    With 'user_timeline', I can get the timeline of a user, then I can go through it with Cursor object
+    and see if any of the keywords are in any of the tweets.
+
+    Mediante 'user_timeline', puedo obtener el
+    perfil de una persona, para luego navegarlo con el objeto Cursor y ver si la palabra clave está
+    en el texto de alguno de sus tweets.
+    """
     print("Beginning to stalk...")
     for status in tweepy.Cursor(tw_api.user_timeline, user_id=user_id, include_rts=False).items():
         st_text = status.text.lower().replace("\n", ' ')
@@ -63,13 +64,6 @@ def write_last_id(filename, last_id):
 
 
 def get_messages(tw_api):
-
-    """
-print(_json["message_create"]['message_data']['text'])
-
-Esta es la manera de acceder al texto del mensaje, primero accediendo a la propiedad '._json' de un objeto obtenido
-mediante 'api.list_direct_messagges()'
-"""
     messages = tw_api.list_direct_messages()
     messages_info = []
     for message in reversed(messages):
